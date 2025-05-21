@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expotec 2025 - Brandsen</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: row;
+      margin: 0;
+      height: 100vh;
+    }
+    .stands-container {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      grid-gap: 5px;
+      width: 70%;
+      padding: 10px;
+      background-color: #f0f0f0;
+    }
+    .stand {
+      background-color: #cce5ff;
+      border: 1px solid #007bff;
+      text-align: center;
+      padding: 20px;
+      cursor: pointer;
+    }
+    .stand:hover {
+      background-color: #99ccff;
+    }
+    .info-panel {
+      width: 30%;
+      padding: 20px;
+      border-left: 2px solid #ccc;
+      display: flex;
+      flex-direction: column;
+    }
+    .search-box {
+      margin-top: 20px;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+    /* Imagen fija en el extremo inferior derecho */
+    .logo {
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      margin: 10px;
+      width: 200px;
+      height: auto;
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+  <!-- Imagen de la escuela -->
+  <img src="tecnica brandsen.JPG" alt="Logo Técnica Brandsen" class="logo">
+
+  <div class="stands-container" id="stands">
+    <!-- Se llenan con JS -->
+  </div>
+
+  <div class="info-panel">
+    <h2>Información del Stand</h2>
+    <div id="stand-info">Selecciona un stand para ver detalles</div>
+
+    <div class="search-box">
+      <h3>Buscar por Alumno</h3>
+      <input type="text" id="search-input" placeholder="Nombre y Apellido">
+      <button onclick="buscarAlumno()">Buscar</button>
+      <div id="search-result"></div>
+    </div>
+  </div>
+
+  <script>
+    // Datos simulados (puedes modificar esto con datos reales)
+    const standData = {};
+    for (let i = 1; i <= 50; i++) {
+      standData[i] = {
+        alumnos: [
+          `Alumno${i}A Apellido${i}A`,
+          `Alumno${i}B Apellido${i}B`
+        ],
+        descripcion: `Este es el stand número ${i} presentado por los alumnos del grupo ${i}.`
+      };
+    }
+
+    // Llenar los stands
+    const standsContainer = document.getElementById("stands");
+    for (let i = 1; i <= 50; i++) {
+      const stand = document.createElement("div");
+      stand.className = "stand";
+      stand.textContent = i;
+      stand.onclick = () => mostrarInfo(i);
+      standsContainer.appendChild(stand);
+    }
+
+    // Mostrar información
+    function mostrarInfo(num) {
+      const info = standData[num];
+      document.getElementById("stand-info").innerHTML = `
+        <strong>Stand ${num}</strong><br>
+        <p>${info.descripcion}</p>
+        <strong>Alumnos:</strong><br>
+        <ul>${info.alumnos.map(al => `<li>${al}</li>`).join('')}</ul>
+      `;
+    }
+
+    // Buscar por nombre de alumno
+    function buscarAlumno() {
+      const nombre = document.getElementById("search-input").value.toLowerCase();
+      let resultado = "No se encontró al alumno.";
+      for (let i = 1; i <= 50; i++) {
+        for (const alumno of standData[i].alumnos) {
+          if (alumno.toLowerCase().includes(nombre)) {
+            resultado = `El alumno está en el <strong>Stand ${i}</strong>`;
+            break;
+          }
+        }
+      }
+      document.getElementById("search-result").innerHTML = resultado;
+    }
+  </script>
+</body>
+</html>
